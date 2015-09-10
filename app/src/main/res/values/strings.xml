@@ -5,4 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="look_up">Lookup query</string>
     <string name="search">Search</string>
+    <string name="voice_input_description">Voice Input</string>
+    <string name="speech_not_supported">Sorry, but it looks like your device doesn\'t support microphone</string>
+    <string name="speech_prompt">What are you looking for?</string>
+    <string name="cancel_button_description">cancel request button</string>
+    <string name="nist_info">This product uses data provided by the National Institute of Standards and Technology (NIST) but is not endorsed or certified by NIST. \n NIST SRD: 111, 144</string>
 </resources>

@@ -31,6 +31,41 @@ public class ResultsAdapter extends ArrayAdapter<Map<String, Object>> {
         this.results = new ArrayList<>();
     }
 
+    @SuppressWarnings("unchecked")
+    private String extractData(Object result, int indent) {
+        StringBuilder builder = new StringBuilder();
+        if (result instanceof Map) {
+            for (Map.Entry<String, Object> entry : ((Map<String, Object>) result).entrySet()) {
+                builder.append("\n").append(StringUtils.repeat("   ", indent));
+                builder.append(entry.getKey()).append(" : ").append(extractData(entry.getValue(), indent + 1));
+            }
+        } else {
+            builder.append(result);
+        }
+
+        return builder.toString();
+    }
+
+    @Override public void add(Map<String, Object> object) {
+        results.add(object);
+    }
+
+    @Override public void addAll(Collection<? extends Map<String, Object>> collection) {
+        results.addAll(collection);
+    }
+
+    @Override public void clear() {
+        results.clear();
+    }
+
+    @Override public int getCount() {
+        return results.size();
+    }
+
+    @Override public Map<String, Object> getItem(int position) {
+        return results.get(position);
+    }
+
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         ResultHolder viewHolder;
         if (convertView == null) {
@@ -48,41 +83,6 @@ public class ResultsAdapter extends ArrayAdapter<Map<String, Object>> {
         viewHolder.subtext.setText(extractData(result.get(key), 0));
 
         return convertView;
-    }
-
-    @SuppressWarnings("unchecked")
-    private String extractData(Object result, int indent) {
-        StringBuilder builder = new StringBuilder();
-        if (result instanceof Map) {
-            for (Map.Entry<String, Object> entry : ((Map<String, Object>) result).entrySet()) {
-                builder.append("\n").append(StringUtils.repeat("   ", indent));
-                builder.append(entry.getKey()).append(" : ").append(extractData(entry.getValue(), indent + 1));
-            }
-        } else {
-            builder.append(result);
-        }
-
-        return builder.toString();
-    }
-
-    @Override public Map<String, Object> getItem(int position) {
-        return results.get(position);
-    }
-
-    @Override public int getCount() {
-        return results.size();
-    }
-
-    @Override public void clear() {
-        results.clear();
-    }
-
-    @Override public void add(Map<String, Object> object) {
-        results.add(object);
-    }
-
-    @Override public void addAll(Collection<? extends Map<String, Object>> collection) {
-        results.addAll(collection);
     }
 
     public class ResultHolder {

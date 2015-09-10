@@ -7,6 +7,7 @@ import java.util.HashMap;
  */
 public class PostPackage extends HashMap<String, Object> {
     String[] keys;
+
     public PostPackage() {
         super();
     }
