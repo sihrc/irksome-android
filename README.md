@@ -14,3 +14,5 @@ This app is a simple look-up application that tries to ease the burden of lookin
 On the server side, indico's keywords API uses the most significant terms in the query to perform a look-up on a comprehensive hash built from the reference data and returns the top 5 ~ 10 results. More data from NIST can be incorporated into the look-up table to provide a broader scope of reference data. The time it takes perform the look-up is not significantly affected by the amount of data since most the data is preproccessed into the hash.
 
 Both the app and the server are online and available for public use at the moment.
+
+Thanks to freepik @ flaticon.com for the app icon

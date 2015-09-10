@@ -48,7 +48,8 @@ public class MainActivity extends FragmentActivity {
             requestCancelled = true;
             setHeader("SEARCH");
         } else {
-            new AlertDialog.Builder(this).setTitle("Exit").setMessage("Are you sure?")
+            new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar)
+                .setTitle("Exit").setMessage("Are you sure?")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         MainActivity.this.finish();

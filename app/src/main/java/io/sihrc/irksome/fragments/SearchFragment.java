@@ -4,18 +4,27 @@ import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +78,8 @@ public class SearchFragment extends Fragment {
         searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override public boolean onQueryTextSubmit(String query) {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                 performSearch(query.toLowerCase().trim());
                 return false;
             }
@@ -77,7 +88,22 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
-        // TODO - format search view better
+
+        int searchSrcTextId = getResources().getIdentifier("android:id/search_src_text", null, null);
+        EditText searchEditText = (EditText) searchView.findViewById(searchSrcTextId);
+        searchEditText.setTextColor(Color.BLACK);
+        searchEditText.setHintTextColor(Color.LTGRAY);
+        searchEditText.setGravity(Gravity.CENTER);
+        int magId = getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView magImage = (ImageView) searchView.findViewById(magId);
+        magImage.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+        final int textViewID = searchView.getContext().getResources().getIdentifier("android:id/search_src_text",null, null);
+        final AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(textViewID);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(searchTextView, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+        } catch (Exception ignored) {}
     }
 
     private void setupVoice() {
@@ -101,6 +127,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void performSearch(final String query) {
+        MainActivity.requestCancelled = false;
         activity.setHeader(query);
         activity.switchFragment(LoadingFragment.newInstance(activity), true);
         activity.getClient().api.search(PostPackage.keys("query").values(query), new retrofit.Callback<List<Map<String, Object>>>() {
