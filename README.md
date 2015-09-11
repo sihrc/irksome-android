@@ -1,6 +1,8 @@
 # Irksome
 NIST Reference Data Challenge
 
+[Google Play Store](https://play.google.com/store/apps/details?id=io.sihrc.irksome)
+
 NOTE: So far, only element data has been implemented from datasets: NIST SRD: 111, 144
 NOTE: Pardon the lazy app naming
 
